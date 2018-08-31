@@ -30,6 +30,7 @@ namespace Core
                     Materno = "Astorga",
                     Email = "durrutia@ucn.cl"
                 };
+                
 
                 Console.WriteLine(persona);
                 Console.WriteLine(Utils.ToJson(persona));
@@ -50,6 +51,21 @@ namespace Core
             }
 
             Console.WriteLine("Done.");
+            
+            Console.WriteLine("Creando cotizacion ");
+
+            
+            Cotizacion cotizacion = new Cotizacion();
+            {
+                cotizacion.id = 1;
+                cotizacion.fecha_creacion = "31-08-2018";
+                cotizacion.rut_cliente = "19.495.360-7";
+                cotizacion.rut_Usuario_Creador = "14.711.291-2";
+                
+            }
+            Console.WriteLine(cotizacion);
+            Console.WriteLine(Utils.ToJson(cotizacion));
+            
         }
     }
 }
