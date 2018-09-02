@@ -57,14 +57,30 @@ namespace Core
             
             Cotizacion cotizacion = new Cotizacion();
             {
-                cotizacion.id = 1;
+                cotizacion.Id = 1;
                 cotizacion.fecha_creacion = "31-08-2018";
                 cotizacion.rut_cliente = "19.495.360-7";
                 cotizacion.rut_Usuario_Creador = "14.711.291-2";
                 
             }
+
+            Item item1 = new Item();
+            {
+                item1.CotizacionId = cotizacion.Id;
+                item1.descripcion = "trabajo numero 1";
+                item1.precio = 200000;
+            }
+            
+            Item item2 = new Item();
+            {
+                item2.CotizacionId = cotizacion.Id;
+                item2.descripcion = "trabajo numero 2";
+                item2.precio = 500000;
+            }
+            
             Console.WriteLine(cotizacion);
             Console.WriteLine(Utils.ToJson(cotizacion));
+            sistema.Save(cotizacion);
             
         }
     }

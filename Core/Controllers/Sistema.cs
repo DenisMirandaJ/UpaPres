@@ -17,20 +17,31 @@ namespace Core.Controllers
 
         private readonly IRepository<Usuario> _repositoryUsuario;
 
+        private readonly ICotizacionRepository _repositoryCotizacion;
+
+        private readonly IRepository<Item> _repositoryItem;
+
         /// <summary>
         /// Inicializa los repositorios internos de la clase.
         /// </summary>
-        public Sistema(IPersonaRepository repositoryPersona, IRepository<Usuario> repositoryUsuario)
+        public Sistema(IPersonaRepository repositoryPersona, IRepository<Usuario> repositoryUsuario,
+                        ICotizacionRepository repositoryCotizacion, IRepository<Item> RepositoryItem)
         {
             // Setter!
             _repositoryPersona = repositoryPersona ??
                                  throw new ArgumentNullException("Se requiere el repositorio de personas");
             _repositoryUsuario = repositoryUsuario ??
                                  throw new ArgumentNullException("Se requiere repositorio de usuarios");
+            _repositoryCotizacion = repositoryCotizacion ??
+                                 throw new ArgumentNullException("Se requiere base de datos de cotizaciones");
+            _repositoryItem = RepositoryItem ??
+                                 throw new ArgumentNullException("Se requiere base de datos de items");
 
             // Inicializacion del repositorio.
             _repositoryPersona.Initialize();
             _repositoryUsuario.Initialize();
+            _repositoryCotizacion.Initialize();
+            _repositoryItem.Initialize();
         }
 
         /// <inheritdoc />
@@ -77,6 +88,16 @@ namespace Core.Controllers
             // Almaceno en el backend
             _repositoryUsuario.Add(usuario);
             
+        }
+
+        public void Save(Cotizacion cotizacion)
+        {
+            if (cotizacion == null)
+            {
+                throw new ModelException("La cotizacion no puede ser nula");
+            }
+
+            _repositoryCotizacion.Add(cotizacion);
         }
 
         /// <inheritdoc />

@@ -13,7 +13,7 @@ namespace Core.Models
         /// <summary>
         /// Identificador unico.
         /// </summary>
-        public int id { get; set; }
+        public int Id { get; set; }
         
         /// <summary>
         /// Rut del cliente asociado a la cotizacion.
@@ -33,7 +33,13 @@ namespace Core.Models
         /// <summary>
         /// Items de los cuales se componen la cotizacion
         /// </summary>
-        public List<Item> listItems { get; set; }
+        //public List<Item> listItems { get; set; }
+        public virtual ICollection<Item> items { get; set; }
+
+        public void AddItem(Item item)
+        {
+            
+        }
 
         /// <summary>
         /// Lugar en el donde se guarda el archivo txt

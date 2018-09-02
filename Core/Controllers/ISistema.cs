@@ -28,6 +28,11 @@ namespace Core.Controllers
         void Save(Persona persona, string password);
 
         /// <summary>
+        /// Guarda una cotizacion en el sistema
+        /// </summary>
+        void Save(Cotizacion cotizacion);
+
+        /// <summary>
         /// Obtiene el usuario desde la base de datos, verificando su login y password.
         /// </summary>
         /// <param name="rutEmail">RUT o Correo Electronico</param>
