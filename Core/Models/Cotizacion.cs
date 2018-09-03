@@ -36,8 +36,14 @@ namespace Core.Models
         //public List<Item> listItems { get; set; }
         public virtual ICollection<Item> items { get; set; }
 
-        public void AddItem(Item item)
+        public void AddItem(String descripcion, int precio )
         {
+            Item item1 = new Item();
+            {
+                item1.CotizacionId = this.Id;
+                item1.descripcion = descripcion;
+                item1.precio = precio;
+            }
             
         }
 

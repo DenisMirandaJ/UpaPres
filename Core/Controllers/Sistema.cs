@@ -91,7 +91,13 @@ namespace Core.Controllers
         }
 
         public void Save(Cotizacion cotizacion)
-        {
+        {    
+            
+            // ver si la cotizacion existe 
+            
+            //Cotizacion coti = _repositoryCotizacion.GetAll(u => u.Cotizacion.Equals(cotizacion)).FirstOrDefault();
+            
+            
             if (cotizacion == null)
             {
                 throw new ModelException("La cotizacion no puede ser nula");
