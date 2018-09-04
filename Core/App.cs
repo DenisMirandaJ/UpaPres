@@ -57,22 +57,19 @@ namespace Core
             
             Cotizacion cotizacion = new Cotizacion();
             {
-              DateTime hoy = DateTime.Now;
+                DateTime hoy = DateTime.Now;
                 string hoySTR = hoy.ToString();
                 cotizacion.Id = 1;
-                cotizacion.fecha_creacion = hoySTR;
-                cotizacion.rut_cliente = "19.495.360-7";
-                cotizacion.rut_Usuario_Creador = "14.711.291-2";
-                cotizacion.AddItem("holaa", 10000);
-                
-                
+                cotizacion.FechaCreacion = hoy;
+                cotizacion.RutCliente = "174920524";
+                cotizacion.RutUsuarioCreador = "147112912";
             }
 
             
             
             Console.WriteLine(cotizacion);
             Console.WriteLine(Utils.ToJson(cotizacion));
-            //problema que el item sigue siendo null 
+            //problema que el item sigue siendo null     
             sistema.Save(cotizacion);
             
         }
