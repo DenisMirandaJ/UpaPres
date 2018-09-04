@@ -18,17 +18,17 @@ namespace Core.Models
         /// <summary>
         /// Rut del cliente asociado a la cotizacion.
         /// </summary>
-        public string rut_cliente { get; set; }
+        public string rutCliente { get; set; }
         
         /// <summary>
         /// fecha la cual se realiaza la cotizacion.
         /// </summary>
-        public string fecha_creacion { get; set; }
+        public DateTime fechaCreacion { get; set; }
         
         /// <summary>
         /// Rut del usuario creador de la cotizacion.
         /// </summary>
-        public string rut_Usuario_Creador { get; set; }
+        public string rutUsuarioCreador { get; set; }
         
         /// <summary>
         /// Items de los cuales se componen la cotizacion
@@ -36,15 +36,13 @@ namespace Core.Models
         //public List<Item> listItems { get; set; }
         public virtual ICollection<Item> items { get; set; }
 
-        public void AddItem(String descripcion, int precio )
+        public void AddItem(Item item)
         {
-            Item item1 = new Item();
+            if (item == null)
             {
-                item1.CotizacionId = this.Id;
-                item1.descripcion = descripcion;
-                item1.precio = precio;
+                throw new ArgumentNullException("Un item en una cotizacion no puede ser NULL");
             }
-            
+            items.Add(item);
         }
 
         /// <summary>
@@ -54,6 +52,19 @@ namespace Core.Models
 
         public override void Validate()
         {
+            if (String.IsNullOrEmpty(rutCliente))
+            {
+                throw new ModelException("Rut no puede ser null");
+            }
+            
+            if (String.IsNullOrEmpty(rutUsuarioCreador))
+            {
+                throw new ModelException("Rut no puede ser null");
+            }
+            
+            // Validacion del RUT
+            Models.Validate.ValidarRut(rutCliente);
+            Models.Validate.ValidarRut(rutUsuarioCreador);
         }
 
 
