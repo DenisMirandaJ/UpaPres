@@ -34,16 +34,9 @@ namespace Core.Models
         /// Items de los cuales se componen la cotizacion
         /// </summary>
         //public List<Item> listItems { get; set; }
-        public virtual ICollection<Item> Items { get; set; }
+        public IList<Item> Items { get; set; }
 
-        public void AddItem(Item item)
-        {
-            if (item == null)
-            {
-                throw new ArgumentNullException("Un item en una cotizacion no puede ser NULL");
-            }
-            Items.Add(item);
-        }
+
 
         /// <summary>
         /// Lugar en el donde se guarda el archivo txt

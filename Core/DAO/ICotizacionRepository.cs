@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Core.Models;
 
 namespace Core.DAO
@@ -16,5 +17,11 @@ namespace Core.DAO
         /// <param name="id">RUT</param>
         /// <returns>The Personas</returns>
         Cotizacion GetById(int id);
+
+        /// <summary>
+        /// Obtiene las cotizaciones creadas entre dos fechas
+        /// </summary>
+        /// <returns></returns>
+        List<Cotizacion> GetbyDate(DateTime d1, DateTime d2);
     }
 }

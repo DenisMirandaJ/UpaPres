@@ -141,5 +141,10 @@ namespace Core.Controllers
         {
             return _repositoryPersona.GetByRutOrEmail(rutEmail);
         }
+
+        public Cotizacion Find(int id)
+        {
+            return _repositoryCotizacion.GetById(id);
+        }
     }
 }

@@ -53,25 +53,39 @@ namespace Core
             Console.WriteLine("Done.");
             
             Console.WriteLine("Creando cotizacion ");
-
-            
-            Cotizacion cotizacion = new Cotizacion();
             {
-                DateTime hoy = DateTime.Now;
-                string hoySTR = hoy.ToString();
-                cotizacion.Id = 1;
-                cotizacion.FechaCreacion = hoy;
-                cotizacion.RutCliente = "174920524";
-                cotizacion.RutUsuarioCreador = "147112912";
-            }
+                Cotizacion cotizacion = new Cotizacion();
+                {
+                    cotizacion.Id = 1;
+                    cotizacion.FechaCreacion = DateTime.Now;
+                    cotizacion.RutCliente = "174920524";
+                    cotizacion.RutUsuarioCreador = "147112912";
+                    cotizacion.Items = new List<Item>();
+                };
 
+                Item item1 = new Item();
+                {
+                    item1.descripcion = "item de prueba1";
+                    item1.precio = 250000;
+                };
+
+                Item item2 = new Item();
+                {
+                    item2.descripcion = "item de prueba2";
+                    item2.precio = 200000;
+                }
+
+                Console.WriteLine(item1.descripcion);
+                cotizacion.Items.Add(item1);
+                cotizacion.Items.Add(item2);
+
+                Console.WriteLine(cotizacion);
+                Console.WriteLine(Utils.ToJson(cotizacion));
+                //problema que el item sigue siendo null     
+                sistema.Save(cotizacion);
+            }
             
-            
-            Console.WriteLine(cotizacion);
-            Console.WriteLine(Utils.ToJson(cotizacion));
-            //problema que el item sigue siendo null     
-            sistema.Save(cotizacion);
-            
+            Console.WriteLine("Creacion de cotizacion. Done");
         }
     }
 }
