@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Core.Models;
+using System;
 
 namespace Core.Controllers
 {
@@ -47,6 +48,28 @@ namespace Core.Controllers
         /// <returns>La persona si existe</returns>
         Persona Find(string rutEmail);
 
-        Cotizacion Find(int id);
+        /// <summary>
+        /// busca cotizaciones segun el criterio de busqueda, la cotizacion debe estar entre dos fechas
+        /// </summary>
+        /// <param name="criteriobusqueda"></param>
+        /// <param name="fechaInicio"></param>
+        /// <param name="fechaTermino"></param>
+        /// <returns>Una lista de cotizaciones que cumplan con el criterio de busqueda</returns>
+        IList<Cotizacion> BuscarCotizacion(String criterioDebusqueda);
+
+        IList<Cotizacion> BuscarCotizacionEntreFechas(String criterioBusqueda, DateTime fechaInicio,
+            DateTime fechaTermino);
+
+        //Cotizacion BuscarCotizacion(String criteriobusqueda, DateTime fechaInicio, DateTime fechaTermino);
+
+        /// <summary>
+        /// define el tipo de busqueda necesario
+        /// </summary>
+        /// <param name="criterioBusqueda"></param>
+        /// <returns></returns>
+        String TipoBusqueda(String criterioBusqueda);
+
+        //String EliminarCotizacion(int id);
+        
     }
 }

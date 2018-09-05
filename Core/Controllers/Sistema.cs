@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.DAO;
 using Core.Models;
+using System.Collections;
+using System.Data;
 
 namespace Core.Controllers
 {
@@ -142,9 +144,127 @@ namespace Core.Controllers
             return _repositoryPersona.GetByRutOrEmail(rutEmail);
         }
 
-        public Cotizacion Find(int id)
+
+        /// <summary>
+        /// Retorna el tipo de busqueda segun el criterio de busqueda
+        /// Los tipos de busqueda posibles son:
+        /// Rut: Para buscar cotizaciones segun el rut del Usuario creador o el rut del cliente
+        /// Texto: Para coincidencias de texto dentro de los items de las cotizaciones
+        /// Fecha: buscar una cotizacion creada en la fecha ingresada
+        /// </summary>
+        /// <param name="criterioBusqueda"></param>
+        /// <returns>String con el tipo de busqueda a realizar</returns>
+        public String TipoBusqueda(String criterioBusqueda)
         {
-            return _repositoryCotizacion.GetById(id);
+            if (String.IsNullOrEmpty(criterioBusqueda) || String.IsNullOrWhiteSpace(criterioBusqueda))
+            {
+                throw new ArgumentException("El criterio de busqueda no puede estar vacio");
+            }
+            try
+            {
+                //check si el criterio de busqueda es un rut
+                Models.Validate.ValidarRut(criterioBusqueda);
+                return "Rut";
+            }
+            catch (ModelException e) { ; }
+
+            DateTime t;
+            if (DateTime.TryParse(criterioBusqueda, out t))
+            {
+                return "Fecha";
+            }
+
+            return "Texto";
+        }
+
+        /// <summary>
+        /// Busca una cotizacion, identificando el criterio de busqueda
+        /// </summary>
+        /// <param name="criterioDeBusqueda"></param>
+        /// <returns>Lista de cotizaciones que cumplan con el criterio de busqueda</returns>
+        public IList<Cotizacion> BuscarCotizacion(String criterioDeBusqueda)
+        {
+            //metodo local para buscar por coincidencias de texto dentro de las cotizaciones
+            IList<Cotizacion> BuscarPorTexto(String _criterioDeBusqueda)
+            {
+                IList<Cotizacion> cotizaciones= _repositoryCotizacion.GetAll();
+                HashSet<Cotizacion> cotizacionesElegidas =  new HashSet<Cotizacion>(); //no queremos repeticiones, en caso de haberlas
+                foreach (Cotizacion cotizacion in cotizaciones)
+                {
+                    foreach (Item items in cotizacion.Items)
+                    {
+                        if (items.descripcion.Contains(_criterioDeBusqueda))
+                        {
+                            cotizacionesElegidas.Add(cotizacion);
+                        }
+                    }
+                }
+
+                return cotizacionesElegidas.ToList();
+            }
+            
+            try
+            {
+                TipoBusqueda(criterioDeBusqueda); //asegurandonos que el criterio de busqueda no sea null o este vacio
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine("El criterio de busqueda no puede estar vacio");
+                throw e;
+            }
+
+            String tipoBusqueda = TipoBusqueda(criterioDeBusqueda);
+            switch (tipoBusqueda) 
+            {
+                case  "Rut":
+                    IList<Cotizacion> cot = _repositoryCotizacion.GetAll(c => c.RutCliente.Equals(criterioDeBusqueda) || 
+                                                             c.RutUsuarioCreador.Equals(criterioDeBusqueda));
+                    return cot;
+                case "Texto":
+                    return BuscarPorTexto(criterioDeBusqueda); 
+                case "Fecha":
+                    return _repositoryCotizacion.GetAll(
+                        c => c.FechaCreacion.Equals(DateTime.ParseExact(criterioDeBusqueda, "dd/mm/yyyy", null)));
+            }
+
+            return null; //nunca se deberia llegar aqui /s
+        }
+
+        /// <summary>
+        /// Encuentra una cotizacion segun el criterio de busqueda
+        /// Ademas filtra los resultados por fecha
+        /// </summary>
+        /// <param name="criterioBusqueda"></param>
+        /// <param name="fechaInicio"></param>
+        /// <param name="fechaTermino"></param>
+        /// <returns>Cotizaciones encontrdaas filtradas por fecha</returns>
+        /// <exception cref="ArgumentException"></exception>
+        public IList<Cotizacion> BuscarCotizacionEntreFechas(String criterioBusqueda, DateTime fechaInicio,
+            DateTime fechaTermino)
+        {
+            if (fechaInicio == null || fechaTermino == null)
+            {
+                throw new ArgumentNullException("Las fechas de busqueda no pueden ser null");
+            }
+            try
+            {
+                HashSet<Cotizacion> cotizaciones = new HashSet<Cotizacion>(); //Set para no tener duplicados en caso de haberlos
+                IList<Cotizacion> cotizacionesEncontradas= BuscarCotizacion(criterioBusqueda);
+                foreach (Cotizacion cotizacion in cotizacionesEncontradas)
+                {
+                    if (cotizacion.FechaCreacion >= fechaInicio && cotizacion.FechaCreacion <= fechaTermino)
+                    {
+                        cotizaciones.Add(cotizacion);
+                    }
+                }
+
+                return cotizaciones.ToList();
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e);
+                throw new ArgumentException("El criterio de busqueda no puede estar vacio o ser nulo");
+            }
         }
     }
 }

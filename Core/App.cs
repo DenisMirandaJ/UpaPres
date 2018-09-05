@@ -83,6 +83,9 @@ namespace Core
                 Console.WriteLine(Utils.ToJson(cotizacion));
                 //problema que el item sigue siendo null     
                 sistema.Save(cotizacion);
+
+                IList<Cotizacion> cot = sistema.BuscarCotizacion("147112912");
+                
             }
             
             Console.WriteLine("Creacion de cotizacion. Done");
