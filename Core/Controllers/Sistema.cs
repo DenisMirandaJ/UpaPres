@@ -94,12 +94,31 @@ namespace Core.Controllers
 
         public void EliminarCotizacion(Cotizacion cotizacion)
         {
-            throw new NotImplementedException();
+            IRepository<Cotizacion> coti = _repositoryCotizacion;
+            if (cotizacion == null)
+            {
+                throw new ModelException("La cotizacion no puede ser nula");
+            }
+            else
+            {
+                coti.Remove(cotizacion);
+            }
+            
+            
         }
 
         public void AgregarCotizacion(Cotizacion cotizacion)
         {
-            throw new NotImplementedException();
+            IRepository<Cotizacion> coti = _repositoryCotizacion;
+            if (cotizacion == null)
+            {
+                throw new ModelException("La cotizacion no puede ser nula");
+            }
+            else
+            {
+                coti.Add(cotizacion);
+            }
+            
         }
 
         public void EditarCotizacion(Cotizacion cotizacion)
