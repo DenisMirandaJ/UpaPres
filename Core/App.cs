@@ -90,5 +90,16 @@ namespace Core
             
             Console.WriteLine("Creacion de cotizacion. Done");
         }
+
+        private static void Menu()
+        {
+            string Login;
+            string Pass;
+            Console.WriteLine(" Registrese porfavor para ingresar al sistema ");
+            
+            
+            
+            
+        }
     }
 }

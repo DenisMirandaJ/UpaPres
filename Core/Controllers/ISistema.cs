@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using Core.Models;
 using System;
@@ -27,6 +28,14 @@ namespace Core.Controllers
         /// <param name="persona"></param>
         /// <param name="password"></param>
         void Save(Persona persona, string password);
+
+        void EliminarCotizacion(Cotizacion cotizacion);
+
+        void AgregarCotizacion(Cotizacion cotizacion);
+
+        void EditarCotizacion(Cotizacion cotizacion);
+        
+        
 
         /// <summary>
         /// Guarda una cotizacion en el sistema
