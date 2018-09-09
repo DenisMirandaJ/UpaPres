@@ -29,18 +29,19 @@ namespace Core.Controllers
         /// <param name="password"></param>
         void Save(Persona persona, string password);
 
-        void EliminarCotizacion(Cotizacion cotizacion);
-
-        void AgregarCotizacion(Cotizacion cotizacion);
-
-        void EditarCotizacion(Cotizacion cotizacion);
-        
-        
-
+        void EliminarCotizacion(int id);
         /// <summary>
         /// Guarda una cotizacion en el sistema
         /// </summary>
-        void Save(Cotizacion cotizacion);
+
+        void AgregarCotizacion(Cotizacion cotizacion);
+
+        void EditarCotizacion<T>(int id , string campo , T cambio);
+        
+        
+
+        
+        
 
         /// <summary>
         /// Obtiene el usuario desde la base de datos, verificando su login y password.

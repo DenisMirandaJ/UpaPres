@@ -92,16 +92,19 @@ namespace Core.Controllers
             
         }
 
-        public void EliminarCotizacion(Cotizacion cotizacion)
+        public void EliminarCotizacion(int id )
         {
-            IRepository<Cotizacion> coti = _repositoryCotizacion;
+
+            Cotizacion cotizacion = _repositoryCotizacion.GetById(id) ;
+                   
+            
             if (cotizacion == null)
             {
                 throw new ModelException("La cotizacion no puede ser nula");
             }
             else
             {
-                coti.Remove(cotizacion);
+                _repositoryCotizacion.Remove(cotizacion);
             }
             
             
@@ -109,34 +112,55 @@ namespace Core.Controllers
 
         public void AgregarCotizacion(Cotizacion cotizacion)
         {
-            IRepository<Cotizacion> coti = _repositoryCotizacion;
+            
             if (cotizacion == null)
             {
                 throw new ModelException("La cotizacion no puede ser nula");
             }
             else
             {
-                coti.Add(cotizacion);
+                _repositoryCotizacion.Add(cotizacion);
             }
             
         }
 
-        public void EditarCotizacion(Cotizacion cotizacion)
+        public void EditarCotizacion<T>(int id , string campo , T cambio )
         {
-            
-            throw new NotImplementedException();
-            
-        }
+            Cotizacion cotizacion = _repositoryCotizacion.GetById(id) ;
 
-        public void Save(Cotizacion cotizacion)
-        {    
-            if (cotizacion == null)
+            if (campo.Equals("RutCliente") || campo.Equals("FechaCreacion") || campo.Equals("RutUsuarioCreador") ||
+                campo.Equals("Items"))
             {
-                throw new ModelException("La cotizacion no puede ser nula");
+                if (campo.Equals("RutCliente") )
+                {
+                    
+                }
+
+                if ( campo.Equals("FechaCreacion"))
+                {
+                    
+                }
+
+                if (campo.Equals("RutUsuarioCreador"))
+                {
+                    
+                }
+
+                if (campo.Equals("Items"))
+                {
+                    
+                }
+            }
+            else
+            {
+                throw new ArgumentException("El criterio de editado no puede estar vacio");
+                
             }
 
-            _repositoryCotizacion.Add(cotizacion);
+
         }
+
+        
 
         /// <inheritdoc />
         public Usuario Login(string rutEmail, string password)

@@ -82,7 +82,7 @@ namespace Core
                 Console.WriteLine(cotizacion);
                 Console.WriteLine(Utils.ToJson(cotizacion));
                 //problema que el item sigue siendo null     
-                sistema.Save(cotizacion);
+                sistema.AgregarCotizacion(cotizacion);
 
                 IList<Cotizacion> cot = sistema.BuscarCotizacion("147112912");
                 

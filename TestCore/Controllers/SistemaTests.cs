@@ -138,7 +138,7 @@ namespace TestCore.Controllers
                 Console.WriteLine(cotizacion);
                 Console.WriteLine(Utils.ToJson(cotizacion));
                 //problema que el item sigue siendo null     
-                sistema.Save(cotizacion);
+                sistema.AgregarCotizacion(cotizacion);
             }
             _output.WriteLine("Done..");
             _output.WriteLine("Probando criterio de busqueda null o vacio");
