@@ -92,7 +92,7 @@ namespace Core.Controllers
             
         }
 
-        public void EliminarCotizacion(int id )
+        public void  EliminarCotizacion(int id )
         {
 
             Cotizacion cotizacion = _repositoryCotizacion.GetById(id) ;
@@ -124,7 +124,7 @@ namespace Core.Controllers
             
         }
 
-        public void EditarCotizacion<T>(int id , string campo , T cambio )
+        public void  EditarCotizacion<T>(int id , string campo , T cambio )
         {
             Cotizacion cotizacion = _repositoryCotizacion.GetById(id) ;
 
@@ -133,22 +133,23 @@ namespace Core.Controllers
             {
                 if (campo.Equals("RutCliente") )
                 {
-                    
+                    cotizacion.RutCliente = cambio.ToString();
                 }
 
                 if ( campo.Equals("FechaCreacion"))
-                {
-                    
+                {    
+                    DateTime localTime = DateTime.Parse(campo.ToString());
+                    cotizacion.FechaCreacion = localTime;
                 }
 
                 if (campo.Equals("RutUsuarioCreador"))
                 {
-                    
+                    cotizacion.RutUsuarioCreador = cambio.ToString();
                 }
 
                 if (campo.Equals("Items"))
                 {
-                    
+                    //cambio en algun items 
                 }
             }
             else
@@ -160,7 +161,33 @@ namespace Core.Controllers
 
         }
 
+        public void BuscarUsuario(string busqueda)
+        {
+            Persona usrBuscado;
+            string busq = TipoBusqueda(busqueda);
+
+            if (busq.Equals("Rut") || busqueda.Equals("Email") )
+            {
+                if (busq.Equals("Rut"))
+                {
+                    usrBuscado = _repositoryPersona.GetByRut(busq);
+                }
+                if (busq.Equals("Email"))
+                {
+                    usrBuscado = _repositoryPersona.GetByRutOrEmail(busq);
+                }
+            }
+
+            
         
+            else
+            {
+                throw new ModelException("La busqueda no es permitida"); 
+            }
+            
+
+
+        }
 
         /// <inheritdoc />
         public Usuario Login(string rutEmail, string password)

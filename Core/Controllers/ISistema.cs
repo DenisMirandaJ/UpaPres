@@ -16,6 +16,8 @@ namespace Core.Controllers
         /// <param name="persona">Persona a guardar en el sistema.</param>
         void Save(Persona persona);
 
+        void BuscarUsuario(string busqueda);
+
         /// <summary>
         /// Obtiene todas las personas del sistema.
         /// </summary>
