@@ -49,6 +49,7 @@ namespace Core.Controllers
         /// <inheritdoc />
         public void Save(Persona persona)
         {
+            persona.Validate();
             // Verificacion de nulidad
             if (persona == null)
             {
@@ -69,6 +70,8 @@ namespace Core.Controllers
         /// <inheritdoc />
         public void Save(Persona persona, string password)
         {
+            
+            persona.Validate();
             // Guardo o actualizo en el backend.
             _repositoryPersona.Add(persona);
 
@@ -112,7 +115,7 @@ namespace Core.Controllers
 
         public void AgregarCotizacion(Cotizacion cotizacion)
         {
-            
+            cotizacion.Validate();  
             if (cotizacion == null)
             {
                 throw new ModelException("La cotizacion no puede ser nula");
@@ -126,6 +129,7 @@ namespace Core.Controllers
 
         public void  EditarCotizacion<T>(int id , string campo , T cambio )
         {
+            
             Cotizacion cotizacion = _repositoryCotizacion.GetById(id) ;
 
             if (campo.Equals("RutCliente") || campo.Equals("FechaCreacion") || campo.Equals("RutUsuarioCreador") ||
@@ -177,12 +181,9 @@ namespace Core.Controllers
                     usrBuscado = _repositoryPersona.GetByRutOrEmail(busq);
                 }
             }
-
-            
-        
             else
             {
-                throw new ModelException("La busqueda no es permitida"); 
+                throw new ModelException("La busqueda de este tipo no es permitida"); 
             }
             
 
@@ -222,6 +223,10 @@ namespace Core.Controllers
         /// <inheritdoc />
         public Persona Find(string rutEmail)
         {
+            if (String.IsNullOrEmpty(rutEmail) || String.IsNullOrWhiteSpace(rutEmail))
+            {
+                throw new ArgumentNullException("El rut o mail de usuario no puede ser null");
+            }
             return _repositoryPersona.GetByRutOrEmail(rutEmail);
         }
 
@@ -346,6 +351,22 @@ namespace Core.Controllers
                 Console.WriteLine(e);
                 throw new ArgumentException("El criterio de busqueda no puede estar vacio o ser nulo");
             }
+        }
+
+        public void EnviarCotizacion(Cotizacion c, Persona p)
+        {
+            if (c == null || p == null)
+            {
+                c.Validate();
+                p.Validate();
+                
+                sendMail(c, p.Email);
+            }
+        }
+
+        private void sendMail(Cotizacion c, String Correo)
+        {
+            throw new NotImplementedException();
         }
     }
 }
