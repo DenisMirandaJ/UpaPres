@@ -113,25 +113,19 @@ namespace Core.Controllers
             {
                 throw new ModelException("La cotizacion no puede ser nula");
             }
-            else
-            {
                 _repositoryCotizacion.Remove(cotizacion);
-            }
             
             
         }
 
         public void AgregarCotizacion(Cotizacion cotizacion)
         {
-            cotizacion.Validate();  
             if (cotizacion == null)
             {
                 throw new ModelException("La cotizacion no puede ser nula");
             }
-            else
-            {
-                _repositoryCotizacion.Add(cotizacion);
-            }
+            cotizacion.Validate();  
+            _repositoryCotizacion.Add(cotizacion);
             
         }
 
@@ -139,7 +133,15 @@ namespace Core.Controllers
         {
             
             Cotizacion cotizacion = _repositoryCotizacion.GetById(id) ;
+            if (cotizacion == null)
+            {
+                throw new ModelException("No existe la cotizacion que se quiere eliminar");
+            }
 
+            if (String.IsNullOrEmpty(campo))
+            {
+                throw new ArgumentNullException();
+            }
             if (campo.Equals("RutCliente") || campo.Equals("FechaCreacion") || campo.Equals("RutUsuarioCreador") ||
                 campo.Equals("Items"))
             {
@@ -163,6 +165,9 @@ namespace Core.Controllers
                 {
                     //cambio en algun items 
                 }
+                
+                EliminarCotizacion(cotizacion.Id);
+                AgregarCotizacion(cotizacion);
             }
             else
             {

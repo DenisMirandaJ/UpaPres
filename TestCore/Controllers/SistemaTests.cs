@@ -276,8 +276,8 @@ namespace TestCore.Controllers
             //Probar criterio de busqueda en blanco o null
             //Probar criterio de eliminacion inxistente 
             {
-                Assert.Throws<ArgumentException>(() => sistema.EliminarCotizacion(91823719)); //numero inexistente
-                Assert.Throws<ArgumentException>(() => sistema.EliminarCotizacion(0)); // numero 0
+                Assert.Throws<ModelException>(() => sistema.EliminarCotizacion(91823719)); //numero inexistente
+                Assert.Throws<ModelException>(() => sistema.EliminarCotizacion(0)); // numero 0
                 Assert.Throws<ArgumentException>(() => sistema.BuscarCotizacion(" "));
                 Assert.Throws<ArgumentException>(() => sistema.BuscarCotizacion(""));
                 Assert.Throws<ArgumentException>(() => sistema.BuscarCotizacion(null));
@@ -322,7 +322,7 @@ namespace TestCore.Controllers
 
             int idINC = 123454;
             string rutCliINC = "1";
-            DateTime fechaCreINC = DateTime.Parse("123817");
+            DateTime fechaCreINC = DateTime.MaxValue;
             string rutUsiCreINC = "10293109";
 
             // Models.ValidateTests.ValidateRutCorrecto(rutCliINC);
@@ -337,32 +337,24 @@ namespace TestCore.Controllers
                 _output.WriteLine("La cotizacion en su fecha de creacion no es la correcta");
             }
 
-            new Models.ValidateTests().ValidateRutCorrecto(rutCliINC);
-            new Models.ValidateTests().ValidateRutCorrecto(rutUsiCreINC);
+            Assert.Throws<ModelException>(()=> Validate.ValidarRut(rutCliINC));
+            Assert.Throws<ModelException>(()=>Validate.ValidarRut(rutUsiCreINC));
             // si estas 2 validaciones se comprueban se crearian las cotizaciones 
-
-
-
-
-        
-
-
-
-         }
+            Assert.Throws<ModelException>(() => sistema.AgregarCotizacion(null));
+        }
 
         [Fact]
         public void EditarCotizacionTest()
         {
             
-            _output.WriteLine("Starting Sistema test ...");
+            _output.WriteLine("Starting EditaCotizacionTest ...");
             ISistema sistema = Startup.BuildSistema();
             Cotizacion cotizacionCorrecta= new Cotizacion()
-            // edicion Correcta 
             {
-                Id = 194953607,
+                Id = 1,
                 RutCliente = "194953607",
                 FechaCreacion = DateTime.Now,
-                RutUsuarioCreador = "191234567",
+                RutUsuarioCreador = "140578797",
                 Items = new List<Item>()
             };
                 
@@ -378,11 +370,11 @@ namespace TestCore.Controllers
                 item2.precio = 200000;
             }
 
-            
+            sistema.AgregarCotizacion(cotizacionCorrecta);
             
             _output.WriteLine("Se ha creado una cotizacion correcta ");
-            string rutCambio = "8932897";
-            DateTime fechaCambio = DateTime.Parse("123817");
+            string rutCambio = "148999910";
+            DateTime fechaCambio = DateTime.ParseExact("01/01/2030", "dd/mm/yyyy", null);
             _output.WriteLine(" Comprobando su Rut ... ");
             new Models.ValidateTests().ValidateRutCorrecto(rutCambio);
             if (fechaCambio >= DateTime.Now)
@@ -390,48 +382,15 @@ namespace TestCore.Controllers
                 _output.WriteLine("Imposible realizar esta cambio con la fecha Mayor al dia actual");
             }
             
+            _output.WriteLine("no deberia aceptar una id 0, null, o valor de busqueda vacio");
             //no deberia aceptar una id 0
-            Assert.Throws<ArgumentNullException>(() => sistema.EditarCotizacion(0, "rut", "cambio123"));
+            Assert.Throws<ModelException>(() => sistema.EditarCotizacion(0, "RutCliente", "147112912"));
             //no deberia aceptar un campo null
             Assert.Throws<ArgumentNullException>(() => sistema.EditarCotizacion(1, null, "cambio123"));
             // no deberia acpetar un Cambio vacio
-            Assert.Throws<ArgumentNullException>(() => sistema.EditarCotizacion(1, "rut", ""));
+            //Assert.Throws<ArgumentNullException>(() => sistema.EditarCotizacion(1, "RutCliente", ""));
 
 
-        }
-
-
-        [Fact]
-        public void BuscarUsrTest()
-        {
-            _output.WriteLine("Starting Sistema test ...");
-            ISistema sistema = Startup.BuildSistema();
-            Cotizacion cotizacionCorrecta= new Cotizacion()
-                // edicion Correcta 
-                {
-                    Id = 194953607,
-                    RutCliente = "194953607",
-                    FechaCreacion = DateTime.Now,
-                    RutUsuarioCreador = "191234567",
-                    Items = new List<Item>()
-                };
-                
-            Item item1 = new Item();
-            {
-                item1.descripcion = "item de prueba1";
-                item1.precio = 250000;
-            }
-
-            Item item2 = new Item();
-            {
-                item2.descripcion = "item de prueba2";
-                item2.precio = 200000;
-            }
-            
-            //no deberia aceptar un criterio 0 ya que nada deberia tener cero en su comienzo
-            Assert.Throws<ArgumentNullException>(() => sistema.BuscarCotizacion("0"));
-            //no deberia aceptar null
-            Assert.Throws<ArgumentNullException>(() => sistema.BuscarCotizacion(null));
         }
 
         [Fact]
@@ -513,7 +472,7 @@ namespace TestCore.Controllers
             Assert.Throws<ArgumentNullException>(() => sistema.UsuarioSave(personaCorrecto, null));
             Assert.Throws<ArgumentNullException>(() => sistema.UsuarioSave(personaCorrecto, ""));
             //Persona con formato incorrecto
-            Assert.Throws<ModelException>(() => sistema.UsuarioSave(personaIncorrecto, null));
+            Assert.Throws<ModelException>(() => sistema.UsuarioSave(personaIncorrecto, "123"));
             
             //agregar usuario nuevo (exito)
             sistema.UsuarioSave(personaCorrecto, "1234");
