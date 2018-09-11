@@ -54,6 +54,11 @@ namespace Core.Models
             {
                 throw new ModelException("Rut no puede ser null");
             }
+
+            if (DateTime.Compare(DateTime.Now, FechaCreacion) < 0)
+            {
+                throw new ModelException("La fecha no puede ser en el futuro");
+            }
             
             // Validacion del RUT
             Models.Validate.ValidarRut(RutCliente);

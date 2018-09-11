@@ -70,7 +70,15 @@ namespace Core.Controllers
         /// <inheritdoc />
         public void UsuarioSave(Persona persona, string password)
         {
-            
+            if (String.IsNullOrEmpty(password) || String.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentNullException("La contrasenia no puede ser null");
+            }
+            if (persona == null)
+            {
+                throw new ArgumentNullException("El usuario no puede ser Nulo");
+            }
+            //verificar formato del usuario
             persona.Validate();
             // Guardo o actualizo en el backend.
             _repositoryPersona.Add(persona);

@@ -282,5 +282,42 @@ namespace TestCore.Controllers
             //Exito
             Assert.NotEmpty(sistema.GetPersonas());
         }
+
+        [Fact]
+        public void UsuarioSaveTest()
+        {
+            _output.WriteLine("Starting UsuarioSaveTest ...");
+            ISistema sistema = Startup.BuildSistema();
+            Persona personaCorrecto = new Persona()
+            {
+                Rut = "130144918",
+                Nombre = "Diego",
+                Paterno = "Urrutia",
+                Materno = "Astorga",
+                Email = "durrutia@ucn.cl"
+            };
+            Persona personaIncorrecto = new Persona()
+            {
+                Rut = "", //rut vacio
+                Nombre = "Diego",
+                Paterno = "Urrutia",
+                Materno = "Astorga",
+                Email = "durrutia@ucn.cl"
+            };
+
+            //no deberia aceptar persona nula
+            Assert.Throws<ArgumentNullException>(() => sistema.UsuarioSave(null, "password"));
+            //Ni password nulas o vacias
+            Assert.Throws<ArgumentNullException>(() => sistema.UsuarioSave(personaCorrecto, null));
+            Assert.Throws<ArgumentNullException>(() => sistema.UsuarioSave(personaCorrecto, ""));
+            //Persona con formato incorrecto
+            Assert.Throws<ModelException>(() => sistema.UsuarioSave(personaIncorrecto, null));
+            
+            //agregar usuario nuevo (exito)
+            sistema.UsuarioSave(personaCorrecto, "1234");
+            //actualizat usuario (extio)
+            sistema.UsuarioSave(personaCorrecto,"4321");
+
+        }
     }
 }
