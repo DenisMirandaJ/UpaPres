@@ -28,7 +28,7 @@ namespace TestCore.Models
             Console.WriteLine(persona);
         }
 
-        [Theory]
+        [Fact]
         public void ValidateTest()
         {
             Persona persona = new Persona()

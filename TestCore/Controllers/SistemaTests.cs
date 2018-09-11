@@ -69,7 +69,7 @@ namespace TestCore.Controllers
                     Email = "durrutia@ucn.cl"
                 };
 
-                sistema.Save(persona);
+                sistema.PersonaSave(persona);
             }
             
             // GetPersonas
@@ -102,7 +102,7 @@ namespace TestCore.Controllers
                 Assert.NotNull(persona);
                 _output.WriteLine("Persona: {0}", Utils.ToJson(persona));
                 
-                sistema.Save(persona, "durrutia123");
+                sistema.UsuarioSave(persona, "durrutia123");
             }
 
             // Busqueda de usuario
@@ -232,9 +232,11 @@ namespace TestCore.Controllers
             //}
         }
 
-        [Theory]
+        [Fact]
         public void PersonaSaveTest()
         {
+            _output.WriteLine("Starting PErsonaSAveTEst ...");
+            ISistema sistema = Startup.BuildSistema();
             Persona personaCorrecto = new Persona()
             {
                 Rut = "130144918",
@@ -246,12 +248,39 @@ namespace TestCore.Controllers
             
             Persona personaIncorrecto = new Persona()
             {
+                Rut = "",
+                Nombre = "Diego",
+                Paterno = "Urrutia",
+                Materno = "Astorga",
+                Email = "durrutia@ucn.cl"
+            };
+            
+            //Psibles errores
+            Assert.Throws<ModelException>(() => sistema.PersonaSave(null));
+            Assert.Throws<ModelException>(() => sistema.PersonaSave(personaIncorrecto));
+            _output.WriteLine("PersonaSaveTest Done ...");
+
+        }
+
+        [Fact]
+        public void GetPersonasTest()
+        {
+            _output.WriteLine("Starting GetPersonasTest ...");
+            ISistema sistema = Startup.BuildSistema();
+            Persona personaCorrecto = new Persona()
+            {
                 Rut = "130144918",
                 Nombre = "Diego",
                 Paterno = "Urrutia",
                 Materno = "Astorga",
                 Email = "durrutia@ucn.cl"
             };
+            
+            //No exito
+            Assert.Empty(sistema.GetPersonas());
+            sistema.PersonaSave(personaCorrecto);
+            //Exito
+            Assert.NotEmpty(sistema.GetPersonas());
         }
     }
 }

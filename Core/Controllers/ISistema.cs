@@ -14,7 +14,7 @@ namespace Core.Controllers
         /// Operacion de sistema: Almacena una persona en el sistema.
         /// </summary>
         /// <param name="persona">Persona a guardar en el sistema.</param>
-        void Save(Persona persona);
+        void PersonaSave(Persona persona);
 
         void BuscarUsuario(string busqueda);
 
@@ -29,7 +29,7 @@ namespace Core.Controllers
         /// </summary>
         /// <param name="persona"></param>
         /// <param name="password"></param>
-        void Save(Persona persona, string password);
+        void UsuarioSave(Persona persona, string password);
 
         void EliminarCotizacion(int id);
         /// <summary>

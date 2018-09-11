@@ -36,7 +36,7 @@ namespace Core
                 Console.WriteLine(Utils.ToJson(persona));
 
                 // Save in the repository
-                sistema.Save(persona);
+                sistema.PersonaSave(persona);
             }
 
             Console.WriteLine("Finding personas ..");

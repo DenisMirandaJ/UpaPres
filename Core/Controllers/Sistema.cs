@@ -47,14 +47,14 @@ namespace Core.Controllers
         }
 
         /// <inheritdoc />
-        public void Save(Persona persona)
+        public void PersonaSave(Persona persona)
         {
-            persona.Validate();
             // Verificacion de nulidad
             if (persona == null)
             {
                 throw new ModelException("Persona es null");
             }
+            persona.Validate();
 
             // Saving the Persona en el repositorio.
             // La validacion de los atributos ocurre en el repositorio.
@@ -68,7 +68,7 @@ namespace Core.Controllers
         }
 
         /// <inheritdoc />
-        public void Save(Persona persona, string password)
+        public void UsuarioSave(Persona persona, string password)
         {
             
             persona.Validate();
