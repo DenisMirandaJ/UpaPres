@@ -30,6 +30,24 @@ namespace TestCore.Controllers
             _output = output ?? throw new ArgumentNullException(nameof(output));
         }
 
+
+        [Fact]
+        public void SistemaConstructorTest()
+        {
+            DbContextOptions<ModelDbContext> options = new DbContextOptionsBuilder<ModelDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .EnableSensitiveDataLogging()
+                .Options;
+            DbContext dbContext = new ModelDbContext(options);
+            IPersonaRepository personas = new PersonaRepository(dbContext);
+            IRepository<Usuario> usuarios = new ModelRepository<Usuario>(dbContext);
+            ICotizacionRepository cotizaciones = new CotizacionRepository(dbContext);
+            IRepository<Item> items = null;
+
+            //Cuando faltan repositorios
+            Assert.Throws<ArgumentNullException>(() => new Sistema(personas, usuarios, cotizaciones, items));
+
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -212,6 +230,28 @@ namespace TestCore.Controllers
             //    DateTime t = null;
             //    Assert.Throws<ArgumentNullException>(() => sistema.BuscarCotizacionEntreFechas("criterio", t, t));
             //}
+        }
+
+        [Theory]
+        public void PersonaSaveTest()
+        {
+            Persona personaCorrecto = new Persona()
+            {
+                Rut = "130144918",
+                Nombre = "Diego",
+                Paterno = "Urrutia",
+                Materno = "Astorga",
+                Email = "durrutia@ucn.cl"
+            };
+            
+            Persona personaIncorrecto = new Persona()
+            {
+                Rut = "130144918",
+                Nombre = "Diego",
+                Paterno = "Urrutia",
+                Materno = "Astorga",
+                Email = "durrutia@ucn.cl"
+            };
         }
     }
 }

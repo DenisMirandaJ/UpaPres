@@ -112,6 +112,16 @@ namespace TestCore.DAO
                 Assert.Empty(repo.GetbyDate(d1, d2));
             }
             
+            //Eliminacion (no exito)
+
+            {
+                Cotizacion Cotizacion1 = repo.GetById(1);
+                Assert.NotNull(Cotizacion1);
+                Cotizacion1.Id = -1;
+                
+                repo.Remove(Cotizacion1);   
+            }
+            
             // Eliminacion
             {
                 Cotizacion Cotizacion = repo.GetById(1);
