@@ -400,6 +400,40 @@ namespace TestCore.Controllers
 
         }
 
+
+        [Fact]
+        public void BuscarUsrTest()
+        {
+            _output.WriteLine("Starting Sistema test ...");
+            ISistema sistema = Startup.BuildSistema();
+            Cotizacion cotizacionCorrecta= new Cotizacion()
+                // edicion Correcta 
+                {
+                    Id = 194953607,
+                    RutCliente = "194953607",
+                    FechaCreacion = DateTime.Now,
+                    RutUsuarioCreador = "191234567",
+                    Items = new List<Item>()
+                };
+                
+            Item item1 = new Item();
+            {
+                item1.descripcion = "item de prueba1";
+                item1.precio = 250000;
+            }
+
+            Item item2 = new Item();
+            {
+                item2.descripcion = "item de prueba2";
+                item2.precio = 200000;
+            }
+            
+            //no deberia aceptar un criterio 0 ya que nada deberia tener cero en su comienzo
+            Assert.Throws<ArgumentNullException>(() => sistema.BuscarCotizacion("0"));
+            //no deberia aceptar null
+            Assert.Throws<ArgumentNullException>(() => sistema.BuscarCotizacion(null));
+        }
+
         [Fact]
         public void PersonaSaveTest()
         {
