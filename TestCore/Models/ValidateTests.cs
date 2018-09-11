@@ -19,7 +19,7 @@ namespace TestCore.Models
         [InlineData("113446498")]
         [InlineData("132204810")]
         [InlineData("12345670K")]
-        public void ValidateRutCorrecto(string rut)
+        public  void ValidateRutCorrecto(string rut)
         {
             Validate.ValidarRut(rut);
         }

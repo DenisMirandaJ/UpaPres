@@ -93,9 +93,7 @@ namespace Core
 
         private static void Menu()
         {
-            string Login;
-            string Pass;
-            Console.WriteLine(" Registrese porfavor para ingresar al sistema ");
+            
             
             
             
